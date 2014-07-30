@@ -1,4 +1,4 @@
 RA-OS
 =====
 
-Our first linux os
+Our pratham linux os
