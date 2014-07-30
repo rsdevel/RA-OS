@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# The instructions in this file are extracted from
+# 'Beyond Linux From Scratch' (2014-07-25 / r13664) but are modified for use
+# with LFScript 4 which installs the software to a fake root directory.
+#
+# Beyond Linux From Scratch is released under the MIT license.
+# Copyright (C) 2001-2014, The BLFS Development Team
+
+WGETLIST="http://downloads.sourceforge.net/lxde/lxpanel-0.6.2.tar.gz"
+MD5SUMLIST="b074182b6effe46ccac97bf178de4e32"
+REQUIRES="libwnck2 lxmenu-data menu-cache"
+
+###############################################
+installation() { # INSTALLING SYSTEM SOFTWARE #
+###############################################
+
+./configure --prefix=/usr
+make
+
+make DESTDIR=${FAKEROOT} install
+
+#################
+} # END OF FILE #
+#################
+

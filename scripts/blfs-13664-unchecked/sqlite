@@ -1,0 +1,37 @@
+#!/bin/bash
+
+# The instructions in this file are extracted from
+# 'Beyond Linux From Scratch' (2014-07-25 / r13664) but are modified for use
+# with LFScript 4 which installs the software to a fake root directory.
+#
+# Beyond Linux From Scratch is released under the MIT license.
+# Copyright (C) 2001-2014, The BLFS Development Team
+
+WGETLIST="http://sqlite.org/2014/sqlite-autoconf-3080500.tar.gz
+          http://sqlite.org/2014/sqlite-doc-3080500.zip"
+MD5SUMLIST="0544ef6d7afd8ca797935ccc2685a9ed
+            dontverify"
+REQUIRES="unzip"
+
+###############################################
+installation() { # INSTALLING SYSTEM SOFTWARE #
+###############################################
+
+unzip -q ../sqlite-doc-3080500.zip
+
+./configure --prefix=/usr --disable-static        \
+            CFLAGS="-g -O2 -DSQLITE_ENABLE_FTS3=1 \
+            -DSQLITE_ENABLE_COLUMN_METADATA=1     \
+            -DSQLITE_ENABLE_UNLOCK_NOTIFY=1       \
+            -DSQLITE_SECURE_DELETE=1"
+make
+
+make DESTDIR=${FAKEROOT} install
+
+install -v -m755 -d ${FAKEROOT}/usr/share/doc/sqlite-3.8.5
+cp -v -R sqlite-doc-3080500/* ${FAKEROOT}/usr/share/doc/sqlite-3.8.5
+
+#################
+} # END OF FILE #
+#################
+

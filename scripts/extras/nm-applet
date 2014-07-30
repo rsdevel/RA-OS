@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# This file is part of LFScript. LFScript is released under the MIT license.
+# Copyright (C) 2007-2014 Marcel van den Boer
+
+WGETLIST="http://ftp.acc.umu.se/pub/GNOME/sources/network-manager-applet/0.9/network-manager-applet-0.9.2.0.tar.xz"
+MD5SUMLIST="9623aeb6c782a8d782500cf12c887b5b"
+REQUIRES="iso-codes libmatekeyring libnotify mate-conf networkmanager wpa_supplicant"
+
+###############################################
+installation() { # INSTALLING SYSTEM SOFTWARE #
+###############################################
+
+convertToMate
+
+./configure --prefix=/usr \
+        --sysconfdir=/etc \
+        --with-mateconf-schema-file-dir=/etc/mate/${MATE_RELEASE}/mateconf/schemas
+make
+
+make DESTDIR=${FAKEROOT} install
+
+#################
+} # END OF FILE #
+#################
+

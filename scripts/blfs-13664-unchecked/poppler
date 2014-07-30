@@ -1,0 +1,41 @@
+#!/bin/bash
+
+# The instructions in this file are extracted from
+# 'Beyond Linux From Scratch' (2014-07-25 / r13664) but are modified for use
+# with LFScript 4 which installs the software to a fake root directory.
+#
+# Beyond Linux From Scratch is released under the MIT license.
+# Copyright (C) 2001-2014, The BLFS Development Team
+
+WGETLIST="http://poppler.freedesktop.org/poppler-0.26.3.tar.xz
+          http://poppler.freedesktop.org/poppler-data-0.4.6.tar.gz"
+MD5SUMLIST="e101f6653f9f68ab63dac63ec34801d1
+            dontverify"
+REQUIRES="fontconfig"
+
+###############################################
+installation() { # INSTALLING SYSTEM SOFTWARE #
+###############################################
+
+git clone git://git.freedesktop.org/git/poppler/test ../test
+
+./configure --prefix=/usr     \
+            --sysconfdir=/etc \
+            --disable-static  \
+            --enable-xpdf-headers
+make
+
+make DESTDIR=${FAKEROOT} install
+
+install -v -m755 -d      ${FAKEROOT}/usr/share/doc/poppler-0.26.3
+install -v -m644 README* ${FAKEROOT}/usr/share/doc/poppler-0.26.3
+
+tar -xf ../poppler-data-0.4.6.tar.gz
+cd poppler-data-0.4.6
+
+make DESTDIR=${FAKEROOT} prefix=/usr install
+
+#################
+} # END OF FILE #
+#################
+

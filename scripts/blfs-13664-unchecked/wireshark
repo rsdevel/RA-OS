@@ -1,0 +1,73 @@
+#!/bin/bash
+
+# The instructions in this file are extracted from
+# 'Beyond Linux From Scratch' (2014-07-25 / r13664) but are modified for use
+# with LFScript 4 which installs the software to a fake root directory.
+#
+# Beyond Linux From Scratch is released under the MIT license.
+# Copyright (C) 2001-2014, The BLFS Development Team
+
+WGETLIST="http://www.wireshark.org/download/src/all-versions/wireshark-1.10.8.tar.bz2"
+MD5SUMLIST="510dc3b063785549b41ebc748ac21055"
+REQUIRES="glib2"
+TAGS="preinst"
+
+###############################################
+installation() { # INSTALLING SYSTEM SOFTWARE #
+###############################################
+
+cat > svnversion.h << "EOF"
+#define SVNVERSION "BLFS"
+#define SVNPATH "source"
+EOF
+
+cat > make-version.pl << "EOF"
+#!/usr/bin/perl
+EOF
+
+usermod -a -G wireshark <username>
+
+./configure --prefix=/usr --sysconfdir=/etc
+make
+
+make DESTDIR=${FAKEROOT} install
+
+install -v -m755 -d ${FAKEROOT}/usr/share/doc/wireshark-1.10.8
+install -v -m755 -d ${FAKEROOT}/usr/share/pixmaps/wireshark
+
+install -v -m644    README{,.linux} doc/README.* doc/*.{pod,txt} \
+                    ${FAKEROOT}/usr/share/doc/wireshark-1.10.8
+
+pushd ${FAKEROOT}/usr/share/doc/wireshark-1.10.8
+   for FILENAME in ../../wireshark/*.html; do
+      ln -s -v -f $FILENAME .
+   done
+popd
+
+install -v -m644 -D wireshark.desktop \
+                    ${FAKEROOT}/usr/share/applications/wireshark.desktop
+
+install -v -m644 -D image/wsicon48.png \
+                    ${FAKEROOT}/usr/share/pixmaps/wireshark.png
+
+install -v -m644    image/*.{png,ico,xpm,bmp} \
+                    ${FAKEROOT}/usr/share/pixmaps/wireshark
+
+install -v -m644 <Downloaded_Files> ${FAKEROOT}/usr/share/doc/wireshark-1.10.8
+
+chown -v root:wireshark ${FAKEROOT}/usr/bin/{tshark,dumpcap}
+chmod -v 6550 ${FAKEROOT}/usr/bin/{tshark,dumpcap}
+
+usermod -a -G
+  wireshark <username>
+
+#################################################
+}; preinst() { # PRE-INSTALLATION CONFIGURATION #
+#################################################
+
+groupadd -g 62 wireshark
+
+#################
+} # END OF FILE #
+#################
+

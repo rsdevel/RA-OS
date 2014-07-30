@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# The instructions in this file are extracted from
+# 'Beyond Linux From Scratch' (2014-07-25 / r13664) but are modified for use
+# with LFScript 4 which installs the software to a fake root directory.
+#
+# Beyond Linux From Scratch is released under the MIT license.
+# Copyright (C) 2001-2014, The BLFS Development Team
+
+WGETLIST="http://www.openprinting.org/download/cups-filters/cups-filters-1.0.54.tar.xz
+          http://www.linuxfromscratch.org/patches/blfs/svn/cups-filters-1.0.54-pdftoraster-1.patch"
+MD5SUMLIST="181ee0e6c27cfbb05e241f0267363678
+            dontverify"
+REQUIRES="cups glib2 ijs lcms2 poppler qpdf"
+
+###############################################
+installation() { # INSTALLING SYSTEM SOFTWARE #
+###############################################
+
+patch -Np1 -i ../cups-filters-1.0.54-pdftoraster-1.patch
+./configure --prefix=/usr                               \
+            --sysconfdir=/etc                           \
+            --localstatedir=/var                        \
+            --docdir=/usr/share/doc/cups-filters-1.0.54 \
+            --without-rcdir                             \
+            --with-gs-path=/usr/bin/gs                  \
+            --with-pdftops-path=/usr/bin/gs             \
+            --disable-static
+make
+
+make DESTDIR=${FAKEROOT} install
+
+#################
+} # END OF FILE #
+#################
+

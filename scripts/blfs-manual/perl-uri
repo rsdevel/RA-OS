@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# This file is part of LFScript. LFScript is released under the MIT license.
+# Copyright (C) 2007-2014 Marcel van den Boer
+
+WGETLIST="http://www.cpan.org/authors/id/G/GA/GAAS/URI-1.60.tar.gz"
+MD5SUMLIST="70f739be8ce28b8baba7c5920ffee4dc"
+
+###############################################
+installation() { # INSTALLING SYSTEM SOFTWARE #
+###############################################
+
+perl Makefile.PL &&
+make
+
+make DESTDIR=${FAKEROOT} install
+
+#################
+} # END OF FILE #
+#################
+

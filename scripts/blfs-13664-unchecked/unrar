@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# The instructions in this file are extracted from
+# 'Beyond Linux From Scratch' (2014-07-25 / r13664) but are modified for use
+# with LFScript 4 which installs the software to a fake root directory.
+#
+# Beyond Linux From Scratch is released under the MIT license.
+# Copyright (C) 2001-2014, The BLFS Development Team
+
+WGETLIST="http://www.rarlab.com/rar/unrarsrc-5.1.6.tar.gz"
+MD5SUMLIST="be9607c59d62c3b101a70cd62c681515"
+
+###############################################
+installation() { # INSTALLING SYSTEM SOFTWARE #
+###############################################
+
+make -f makefile
+
+install -v -m755 unrar ${FAKEROOT}/usr/bin
+
+#################
+} # END OF FILE #
+#################
+

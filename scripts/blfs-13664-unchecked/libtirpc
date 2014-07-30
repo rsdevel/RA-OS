@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# The instructions in this file are extracted from
+# 'Beyond Linux From Scratch' (2014-07-25 / r13664) but are modified for use
+# with LFScript 4 which installs the software to a fake root directory.
+#
+# Beyond Linux From Scratch is released under the MIT license.
+# Copyright (C) 2001-2014, The BLFS Development Team
+
+WGETLIST="http://downloads.sourceforge.net/project/libtirpc/libtirpc/0.2.4/libtirpc-0.2.4.tar.bz2"
+MD5SUMLIST="847995e8d002cbf1387bda05947be086"
+
+###############################################
+installation() { # INSTALLING SYSTEM SOFTWARE #
+###############################################
+
+./configure --prefix=/usr     \
+            --sysconfdir=/etc \
+            --disable-static  \
+            --disable-gssapi
+make
+
+make DESTDIR=${FAKEROOT} install
+mv -v ${FAKEROOT}/usr/lib/libtirpc.so.* ${FAKEROOT}/lib
+ln -sfv ../../lib/libtirpc.so.1.0.10 ${FAKEROOT}/usr/lib/libtirpc.so
+
+#################
+} # END OF FILE #
+#################
+

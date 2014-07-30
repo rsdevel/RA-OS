@@ -1,0 +1,68 @@
+#!/bin/bash
+
+# The instructions in this file are extracted from
+# 'Beyond Linux From Scratch' (2014-07-25 / r13664) but are modified for use
+# with LFScript 4 which installs the software to a fake root directory.
+#
+# Beyond Linux From Scratch is released under the MIT license.
+# Copyright (C) 2001-2014, The BLFS Development Team
+
+WGETLIST="http://ffmpeg.org/releases/ffmpeg-2.3.tar.bz2"
+MD5SUMLIST="00f98a030d21366b6583875d57d98c27"
+
+###############################################
+installation() { # INSTALLING SYSTEM SOFTWARE #
+###############################################
+
+sed -i 's/-lflite"/-lflite -lasound"/' configure
+./configure --prefix=/usr        \
+            --enable-gpl         \
+            --enable-version3    \
+            --enable-nonfree     \
+            --disable-static     \
+            --enable-shared      \
+            --disable-debug      \
+            --enable-libass      \
+            --enable-libfdk-aac  \
+            --enable-libmp3lame  \
+            --enable-libtheora   \
+            --enable-libvorbis   \
+            --enable-libvpx      \
+            --enable-libx264     \
+            --enable-x11grab
+make
+gcc tools/qt-faststart.c -o tools/qt-faststart
+
+pushd doc
+for DOCNAME in `basename -s .html *.html`
+do
+    texi2pdf -b $DOCNAME.texi
+    texi2dvi -b $DOCNAME.texi
+    dvips -o    $DOCNAME.ps   \
+                $DOCNAME.dvi
+done
+popd
+unset DOCNAME
+
+make fate-rsync SAMPLES=fate-suite/
+
+make fate SAMPLES=fate-suite/ | tee ../fate.log
+grep ^TEST ../fate.log | wc -l
+
+make DESTDIR=${FAKEROOT} install
+install -v -m755    tools/qt-faststart ${FAKEROOT}/usr/bin
+install -v -m755 -d ${FAKEROOT}/usr/share/doc/ffmpeg
+install -v -m644    doc/*.txt \
+                    ${FAKEROOT}/usr/share/doc/ffmpeg
+
+install -v -m644 doc/*.html \
+                 ${FAKEROOT}/usr/share/doc/ffmpeg
+
+install -v -m755 -d ${FAKEROOT}/usr/share/doc/ffmpeg/api
+install -v -m644    doc/doxy/html/* \
+                    ${FAKEROOT}/usr/share/doc/ffmpeg/api
+
+#################
+} # END OF FILE #
+#################
+

@@ -1,0 +1,66 @@
+#!/bin/bash
+
+# The instructions in this file are extracted from
+# 'Beyond Linux From Scratch' (2014-07-25 / r13664) but are modified for use
+# with LFScript 4 which installs the software to a fake root directory.
+#
+# Beyond Linux From Scratch is released under the MIT license.
+# Copyright (C) 2001-2014, The BLFS Development Team
+
+WGETLIST="https://www.kernel.org/pub/software/scm/git/git-2.0.2.tar.xz
+          https://www.kernel.org/pub/software/scm/git/git-htmldocs-2.0.2.tar.xz
+          https://www.kernel.org/pub/software/scm/git/git-manpages-2.0.2.tar.xz"
+MD5SUMLIST="4515f5926ddae48fe42083a08bd958d5
+            dontverify
+            dontverify"
+
+###############################################
+installation() { # INSTALLING SYSTEM SOFTWARE #
+###############################################
+
+./configure --prefix=/usr         \
+            --with-gitconfig=/etc/gitconfig
+make
+
+make html
+
+make man
+
+make DESTDIR=${FAKEROOT} install
+
+make DESTDIR=${FAKEROOT} install-man
+
+make DESTDIR=${FAKEROOT} htmldir=/usr/share/doc/git-2.0.2 install-html
+mkdir -p ${FAKEROOT}/usr/share/doc/git-2.0.2/man-pages/{html,text}
+mv       ${FAKEROOT}/usr/share/doc/git-2.0.2/{git*.txt,man-pages/text}
+mv       ${FAKEROOT}/usr/share/doc/git-2.0.2/{git*.,index.,man-pages/}html
+mkdir    ${FAKEROOT}/usr/share/doc/git-2.0.2/technical/{html,text}
+mv       ${FAKEROOT}/usr/share/doc/git-2.0.2/technical/{*.txt,text}
+mv       ${FAKEROOT}/usr/share/doc/git-2.0.2/technical/{*.,}html
+mkdir    ${FAKEROOT}/usr/share/doc/git-2.0.2/howto/{html,text}
+mv       ${FAKEROOT}/usr/share/doc/git-2.0.2/howto/{*.txt,text}
+mv       ${FAKEROOT}/usr/share/doc/git-2.0.2/howto/{*.,}html
+
+tar -xf ../git-manpages-2.0.2.tar.xz -C ${FAKEROOT}/usr/share/man --no-same-owner --no-overwrite-dir
+
+mkdir -p ${FAKEROOT}/usr/share/doc/git-2.0.2/man-pages/{html,text}
+
+tar -xf  ../git-htmldocs-2.0.2.tar.xz \
+    -C   ${FAKEROOT}/usr/share/doc/git-2.0.2 --no-same-owner --no-overwrite-dir
+
+find ${FAKEROOT}/usr/share/doc/git-2.0.2 -type d -exec chmod 755 {} \;
+find ${FAKEROOT}/usr/share/doc/git-2.0.2 -type f -exec chmod 644 {} \;
+
+mv       ${FAKEROOT}/usr/share/doc/git-2.0.2/{git*.txt,man-pages/text}
+mv       ${FAKEROOT}/usr/share/doc/git-2.0.2/{git*.,index.,man-pages/}html
+mkdir    ${FAKEROOT}/usr/share/doc/git-2.0.2/technical/{html,text}
+mv       ${FAKEROOT}/usr/share/doc/git-2.0.2/technical/{*.txt,text}
+mv       ${FAKEROOT}/usr/share/doc/git-2.0.2/technical/{*.,}html
+mkdir    ${FAKEROOT}/usr/share/doc/git-2.0.2/howto/{html,text}
+mv       ${FAKEROOT}/usr/share/doc/git-2.0.2/howto/{*.txt,text}
+mv       ${FAKEROOT}/usr/share/doc/git-2.0.2/howto/{*.,}html
+
+#################
+} # END OF FILE #
+#################
+
