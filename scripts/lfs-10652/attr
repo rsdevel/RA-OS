@@ -20,7 +20,7 @@ sed -i -e 's|/@pkg_name@|&-@pkg_version@|' include/builddefs.in
 
 make
 
-make prefix=${FAKEROOT}/usr install install-dev install-lib
+porg -lp attr "make prefix=${FAKEROOT}/usr install install-dev install-lib"
 chmod -v 755 ${FAKEROOT}/usr/lib/libattr.so
 
 mv -v ${FAKEROOT}/usr/lib/libattr.so.* ${FAKEROOT}/lib

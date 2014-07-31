@@ -20,7 +20,7 @@ echo '#define SYS_VIMRC_FILE "/etc/vimrc"' >> src/feature.h
 
 make
 
-make DESTDIR=${FAKEROOT} HELPSUBLOC=/usr/share/doc/vim-7.4 install
+porg -lp vim "make DESTDIR=${FAKEROOT} HELPSUBLOC=/usr/share/doc/vim-7.4 install"
 
 ln -sv vim ${FAKEROOT}/usr/bin/vi
 for L in  ${FAKEROOT}/usr/share/man/{,*/}man1/vim.1; do

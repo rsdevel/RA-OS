@@ -18,7 +18,7 @@ installation() { # INSTALLING SYSTEM SOFTWARE #
 
 make
 
-make DESTDIR=${FAKEROOT} install
+porg -lp xz "make DESTDIR=${FAKEROOT} install"
 mv -v   ${FAKEROOT}/usr/bin/{lzma,unlzma,lzcat,xz,unxz,xzcat} ${FAKEROOT}/bin
 mv -v ${FAKEROOT}/usr/lib/liblzma.so.* ${FAKEROOT}/lib
 ln -svf ../../lib/$(readlink ${FAKEROOT}/usr/lib/liblzma.so) ${FAKEROOT}/usr/lib/liblzma.so

@@ -18,7 +18,7 @@ sed -i '/Error loading kernel symbols/{n;n;d}' ksym_mod.c
 
 make
 
-make prefix=${FAKEROOT} BINDIR=${FAKEROOT}/sbin install
+porg -lp "make prefix=${FAKEROOT} BINDIR=${FAKEROOT}/sbin install"
 
 cat > ${FAKEROOT}/etc/syslog.conf << "EOF"
 # Begin /etc/syslog.conf

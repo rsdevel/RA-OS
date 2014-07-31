@@ -19,7 +19,7 @@ installation() { # INSTALLING SYSTEM SOFTWARE #
 
 make
 
-make DESTDIR=${FAKEROOT} install
+porg -lp texinfo "make DESTDIR=${FAKEROOT} install"
 
 make DESTDIR=${FAKEROOT} TEXMF=/usr/share/texmf install-tex
 

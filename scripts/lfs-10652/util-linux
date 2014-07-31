@@ -20,7 +20,7 @@ mkdir -pv ${FAKEROOT}/var/lib/hwclock
 
 make
 
-make DESTDIR=${FAKEROOT} install
+porg -lp util-linux "make DESTDIR=${FAKEROOT} install"
 
 ######################################################
 }; preparation() { # CONSTRUCTING A TEMPORARY SYSTEM #

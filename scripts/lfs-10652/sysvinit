@@ -20,7 +20,7 @@ patch -Np1 -i ../sysvinit-2.88dsf-consolidated-1.patch
 
 make -C src
 
-make ROOT=${FAKEROOT} -C src install
+porg -lp sysvinit "make ROOT=${FAKEROOT} -C src install"
 
 #################
 } # END OF FILE #

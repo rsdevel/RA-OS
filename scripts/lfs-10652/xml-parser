@@ -18,7 +18,7 @@ perl Makefile.PL
 
 make
 
-make DESTDIR=${FAKEROOT} install
+porg -lp xml-parser "make DESTDIR=${FAKEROOT} install"
 
 #################
 } # END OF FILE #

@@ -18,7 +18,7 @@ installation() { # INSTALLING SYSTEM SOFTWARE #
 
 make
 
-make DESTDIR=${FAKEROOT} install
+porg -lp automake "make DESTDIR=${FAKEROOT} install"
 
 #################
 } # END OF FILE #

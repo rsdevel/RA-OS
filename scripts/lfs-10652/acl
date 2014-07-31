@@ -27,7 +27,7 @@ sed -i -e "/TABS-1;/a if (x > (TABS-1)) x = (TABS-1);" \
 
 make
 
-make prefix=${FAKEROOT}/usr install install-dev install-lib
+porg -lp acl "make prefix=${FAKEROOT}/usr install install-dev install-lib"
 chmod -v 755 ${FAKEROOT}/usr/lib/libacl.so
 
 mv -v ${FAKEROOT}/usr/lib/libacl.so.* ${FAKEROOT}/lib
