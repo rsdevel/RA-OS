@@ -1471,7 +1471,7 @@ verifyEnvironment() {
   rm -f dummy.c dummy
 
   # /bin/sh -> bash
-  if [ "$(basename $(readlink -f /bin/sh))" != "dash" ]; then
+  if [ "$(basename $(readlink -f /bin/sh))" != "bash" ]; then
     PREREQ_FAIL="1"
   fi
 
